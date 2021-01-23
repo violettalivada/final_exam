@@ -1,0 +1,28 @@
+{% load static %}
+{% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+     {% endif %}
+        {% for user in users %}
+            <div class="card my-2" style="width: 18rem;">
+                {% if  user.profile.avatar %}
+                    <img class="card-img-top" src="{{ user.profile.avatar.url }}" width="250" height="250" alt="avatar">
+                {% else %}
+                    <img class="card-img-top" src="{% static 'img/default.png' %}" width="250" height="250" alt="default_avatar">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
+                    <p class="card-text">
+                        <a href="{% url 'accounts:detail' user.id %}">Просмотр</a>
+                    </p>
+                    <div class="friend_list">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'api:add_friend' user.pk %}" class="btn btn-primary my-2" id="add">Добавить в друзья</a>
+                            <a href="{% url 'webapp:create_dialog' user.pk %}" class="btn btn-primary my-2">Написать сообщение</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+{% if is_paginated %}
+     {% include 'partial/pagination.html' %}
+{% endif %}
